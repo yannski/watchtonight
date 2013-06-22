@@ -2,9 +2,13 @@ class Movie
   include Mongoid::Document
   include Mongoid::Timestamps
 
+  field :source_pid, type: String
   field :source_title, type: String
-  field :watchmi_pid, type: String
-  field :watchmi_cat, type: String
+  field :source_category, type: String
+  field :source_description, type: String
+  field :source_production_year, type: String
+  field :source_production_country, type: String
+  field :source_broadcast_time, type: Time
 
   field :imdb_match, type: Mongoid::Boolean, default: false
   field :imdb_rating, type: Float
@@ -30,7 +34,7 @@ class Movie
 
   def self.fetch
     params = {
-      field: ["tit", "cat"]
+      field: ["tit", "cat", "shsyn", "prdct", "time"]
     }
     url = 'api/example.com/broadcasts/format/json/primetime'
     url += "?" + params.to_param.gsub("%5B%5D", "") if params.any?
@@ -40,17 +44,25 @@ class Movie
     body.each{|data|
       internal = data["epgData"]
 
-      cat = internal["cat"].first["value"]
+      category = internal["cat"].try(:first).try(:fetch, "value")
+      description = internal["shsyn"].try(:first).try(:fetch, "value")
+      production_country = internal["prdct"] ? internal["prdct"]["cntr"] : nil
+      production_year = internal["prdct"] ? internal["prdct"]["yfst"] : nil
+      broadcast_time = internal["time"] && internal["time"]["strt"] ? Time.at(internal["time"]["strt"].to_s[0..-4].to_i) : nil
 
-      next unless %w(Spielfilm Serie).include?( cat )
+      next unless %w(Spielfilm Serie).include?( category )
 
-      movie = Movie.find_or_initialize_by(watchmi_pid: internal["pid"])
+      movie = Movie.find_or_initialize_by(source_pid: internal["pid"])
       titles = internal["tit"] || []
       title = titles.select{|x| x["orig"] == 1 }.first
       title ||= titles.select{|x| x["lang"] == "eng" }.first
       title ||= titles.select{|x| x["lang"] == "deu" }.first
       movie.source_title = title["value"]
-      movie.watchmi_cat = cat
+      movie.source_category = category
+      movie.source_description = description
+      movie.source_production_country = production_country
+      movie.source_production_year = production_year
+      movie.source_broadcast_time = broadcast_time
       movie.fetch_imdb_infos
       if movie.save
         number += 1
