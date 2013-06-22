@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/lostisland/faraday_middleware.git
+  revision: b4b19115dd3e3ad0a4f66bdfcf97b61a85964b60
+  branch: faraday-0.9
+  specs:
+    faraday_middleware (0.9.0)
+      faraday (~> 0.9.0.rc5)
+
+GIT
   remote: https://github.com/mongoid/mongoid
   revision: e1b32e598ec231cc7a7e191fd0432e4cd4910447
   specs:
@@ -61,10 +69,8 @@ GEM
     excon (0.23.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
-    faraday (0.8.7)
+    faraday (0.9.0.rc5)
       multipart-post (~> 1.1)
-    faraday_middleware (0.9.0)
-      faraday (>= 0.7.4, < 0.9)
     fog (1.12.1)
       builder
       excon (~> 0.23.0)
@@ -187,8 +193,8 @@ DEPENDENCIES
   airbrake
   coffee-rails (~> 4.0.0)
   dotenv-rails
-  faraday
-  faraday_middleware
+  faraday (~> 0.9.0.rc5)
+  faraday_middleware!
   fog
   haml-rails
   jbuilder (~> 1.2)

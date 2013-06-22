@@ -55,5 +55,5 @@ gem 'mongoid', git: 'https://github.com/mongoid/mongoid'
 gem 'mongoid-paperclip', :require => 'mongoid_paperclip'
 gem 'fog'
 
-gem 'faraday'
-gem 'faraday_middleware'
+gem 'faraday', '~> 0.9.0.rc5'
+gem 'faraday_middleware', github: 'lostisland/faraday_middleware', branch: 'faraday-0.9'
