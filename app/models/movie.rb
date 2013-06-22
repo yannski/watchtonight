@@ -10,6 +10,7 @@ class Movie
   field :source_production_year, type: Integer
   field :source_production_country, type: String
   field :source_broadcast_time, type: Time
+  field :source_genres, type: Array, default: []
 
   field :imdb_match, type: Mongoid::Boolean, default: false
   field :imdb_rating, type: Float
@@ -37,7 +38,7 @@ class Movie
 
   def self.fetch
     params = {
-      field: ["tit", "cat", "shsyn", "prdct", "time"]
+      field: ["tit", "cat", "shsyn", "prdct", "time", "genrenames"]
     }
     url = 'api/example.com/broadcasts/format/json/primetime'
     url += "?" + params.to_param.gsub("%5B%5D", "") if params.any?
@@ -65,6 +66,7 @@ class Movie
       movie.source_production_country = production_country
       movie.source_production_year = production_year
       movie.source_broadcast_time = broadcast_time
+      movie.source_genres = data["genreTitles"]
       if movie.save
         memo << movie
       end
