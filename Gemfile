@@ -57,3 +57,5 @@ gem 'fog'
 
 gem 'faraday', '~> 0.9.0.rc5'
 gem 'faraday_middleware', github: 'lostisland/faraday_middleware', branch: 'faraday-0.9'
+gem 'imdb'
+gem 'themoviedb'
