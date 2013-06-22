@@ -13,6 +13,10 @@ class Movie
 
   validates_presence_of :source_title
 
+  def movie_id
+    id.to_s
+  end
+
   def self.conn
     Faraday.new(:url => 'http://tvhackday2013.lab.watchmi.tv') do |faraday|
       faraday.request  :url_encoded             # form-encode POST params
