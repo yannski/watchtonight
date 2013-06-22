@@ -39,6 +39,7 @@ end
 
 # Use puma as the app server
 gem 'puma'
+gem 'asset_sync'
 
 # Use Capistrano for deployment
 # gem 'capistrano', group: :development

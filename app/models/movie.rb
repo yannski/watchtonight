@@ -1,6 +1,7 @@
 class Movie
   include Mongoid::Document
   include Mongoid::Timestamps
+  include Mongoid::Paperclip
 
   field :source_pid, type: String
   field :source_title, type: String
@@ -16,6 +17,8 @@ class Movie
   field :imdb_id, type: String
 
   validates_presence_of :source_title
+
+  has_mongoid_attached_file :poster
 
   def movie_id
     id.to_s
@@ -40,8 +43,7 @@ class Movie
     url += "?" + params.to_param.gsub("%5B%5D", "") if params.any?
     response = conn.get url, {}, {'Accept' => 'application/json'}
     body = response.body["results"]
-    number = 0
-    body.each{|data|
+    body.inject([]) {|memo, data|
       internal = data["epgData"]
 
       category = internal["cat"].try(:first).try(:fetch, "value")
@@ -50,7 +52,7 @@ class Movie
       production_year = internal["prdct"] ? internal["prdct"]["yfst"] : nil
       broadcast_time = internal["time"] && internal["time"]["strt"] ? Time.at(internal["time"]["strt"].to_s[0..-4].to_i) : nil
 
-      next unless %w(Spielfilm Serie).include?( category )
+      next memo unless %w(Spielfilm Serie).include?( category )
 
       movie = Movie.find_or_initialize_by(source_pid: internal["pid"])
       titles = internal["tit"] || []
@@ -63,12 +65,11 @@ class Movie
       movie.source_production_country = production_country
       movie.source_production_year = production_year
       movie.source_broadcast_time = broadcast_time
-      movie.fetch_imdb_infos
       if movie.save
-        number += 1
+        memo << movie
       end
+      memo
     }
-    number
   end
 
   def fetch_imdb_infos
@@ -103,17 +104,22 @@ class Movie
     end
 
     if imdb_movie && imdb_movie["Title"]
+
+      poster_url = imdb_movie["Poster"]
+
       self.imdb_title = imdb_movie["Title"]
       self.imdb_id = imdb_movie["imdbID"]
-      # m.original_title = movie_source.title
-      # m.cover_url = imdb_movie["Poster"]
       self.imdb_rating = imdb_movie["imdbRating"]
+      self.poster = poster_url.present? && poster_url.is_valid_url? ? URI.parse(poster_url) : nil
       self.imdb_match = true
-      # m.description = imdb_movie["Plot"]
     end
   end
 
   def imdb_url
     "http://www.imdb.com/title/#{imdb_id}"
+  end
+
+  def poster_url
+    poster.url
   end
 end
