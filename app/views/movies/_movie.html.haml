@@ -14,7 +14,10 @@
         %p.movieDescription
           = truncate movie.source_description, length: 100
           %br
-          = link_to "IMDB Page »", movie.imdb_url, class: "btn imdbLink", target: "_blank"
+          - if !movie.is_a?(Catchup) && movie.imdb_url.present?
+            = link_to "IMDB Page »", movie.imdb_url, class: "btn imdbLink", target: "_blank"
+          - elsif movie.is_a?(Catchup) && movie.content_url.present?
+            = link_to "Watch now »", movie.content_url, class: "btn imdbLink", target: "_blank"
     - if movie.imdb_rating.present?
       .cardFix
         .rating= movie.imdb_rating

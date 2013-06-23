@@ -140,7 +140,7 @@ class Movie
   end
 
   def imdb_url
-    "http://www.imdb.com/title/#{imdb_id}"
+    imdb_id.present? ? "http://www.imdb.com/title/#{imdb_id}" : nil
   end
 
   def poster_url

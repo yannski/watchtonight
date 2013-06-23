@@ -13,6 +13,7 @@ class Catchup
   field :source_genres, type: Array, default: []
   field :source_channel, type: String
   field :source_channel_code, type: String
+  field :content_url, type: String
 
   field :imdb_match, type: Mongoid::Boolean, default: false
   field :imdb_rating, type: Float
