@@ -1,4 +1,4 @@
-.span3
+.span3.movie
   .cardContainer{class: !movie.poster.file? && "empty", style: "background-image:url( #{movie.poster.url} )"}
     %h2.movieTitle= movie.source_title
     =# image_tag movie.poster.url if movie.poster.file?

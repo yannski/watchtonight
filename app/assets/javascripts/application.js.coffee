@@ -2,9 +2,16 @@
 #= require jquery_ujs
 #= require turbolinks
 #= require jquery.turbolinks
-#= require bootstrap
+#=# require bootstrap
+
+window.recalculateHeight = () ->
+  current_width = $(".movie .cardContainer").first().width()
+  current_height = (current_width * 750) / 500
+  $(".movie .cardContainer").height(current_height)
+
 
 $(document).ready ->
-  current_width = $("li.movie").first().width()
-  current_height = (current_width * 750) / 500
-  $("li.movie").height(current_height)
+  window.recalculateHeight()
+
+  $(window).on 'resize', () ->
+    window.recalculateHeight()
