@@ -63,14 +63,21 @@
     / /span
     .span9
       .hero-unit
-        %h1 Find a movie to watch!
-        %p
-          This is a movie description, this is a movie description.
-          This is a movie description, this is a movie description.
-          This is a movie description.
-        %p
-          %a.btn.btn-primary.btn-large{:href => "#"} Learn more »
-      - @movies.in_groups_of(4, false) do |group|
+        .row
+          .span4.logo
+            = image_tag "logo.png"
+          .span8.intro
+            %h1 Find a movie to watch, now!
+            %p
+              Sunday evening, 300 channels, nothing on, watch now.
+            %p
+              %a.btn.btn-primary.btn-large{:href => "#"} Learn more »
+      %h2.section Primetime
+      - @movies_primetime.in_groups_of(4, false) do |group|
         .row-fluid
           = render group
+      %h2.section Catchup
+      - @movies_catchup.in_groups_of(4, false) do |group|
+        .row-fluid
+          = render partial: "movie", collection: group, as: :movie
 

@@ -18,16 +18,9 @@
     .navbar.navbar-inverse.navbar-fixed-top
       .navbar-inner
         .container-fluid
-          %button.btn.btn-navbar{"data-target" => ".nav-collapse", "data-toggle" => "collapse", :type => "button"}
-            %span.icon-bar
-            %span.icon-bar
-            %span.icon-bar
-          %a.brand{:href => "#"} What's on tonigh
-          .nav-collapse.collapse
-            %p.navbar-text.pull-right
-            %ul.nav
-              %li.active
-                %a{:href => "#"} Home
+          .pull-right
+            %a.counter{:href => "#"} 0
+          %a.brand{:href => "/"} Watch now !
           / /.nav-collapse
     = yield
     .section
