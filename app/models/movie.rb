@@ -78,6 +78,25 @@ class Movie
     }
   end
 
+  def fetch_imdb_infos!
+    fetch_imdb_infos
+    save
+  end
+
+  def fetch_tmdb_poster!
+    fetch_tmdb_poster
+    save
+  end
+
+  def fetch_tmdb_poster
+    ary = Tmdb::Movie.find(self.source_title)
+    if (match = ary[0])
+      configuration = Tmdb::Configuration.new
+      url = configuration.base_url + "w500" + match.poster_path
+      self.poster = url.present? && url.is_valid_url? ? URI.parse(url) : nil
+    end
+  end
+
   def fetch_imdb_infos
     conn = Faraday.new(:url => 'http://www.imdbapi.com')
     response = conn.get '/', {:t => self.source_title}
@@ -85,7 +104,6 @@ class Movie
     imdb_movie = JSON.parse(response.body)
 
     if !imdb_movie || imdb_movie["Title"].blank?
-      Tmdb::Api.key(ENV["TMDB_API_KEY"])
 
       ary = Tmdb::Movie.find(self.source_title)
 
@@ -127,5 +145,9 @@ class Movie
 
   def poster_url
     poster.url
+  end
+
+  def duration_in_minutes
+    120
   end
 end

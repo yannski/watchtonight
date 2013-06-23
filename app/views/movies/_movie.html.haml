@@ -1,0 +1,19 @@
+.span3
+  .cardContainer{class: !movie.poster.file? && "empty", style: "background-image:url( #{movie.poster.url} )"}
+    %h2.movieTitle= movie.source_title
+    =# image_tag movie.poster.url if movie.poster.file?
+    .cardSlide
+      .cardRight
+        %h3.scifi= movie.source_genres.first
+        %br
+        %h2.movieTitle= movie.source_title
+        %p.movieInfo
+          (#{ movie.source_production_country }, #{ movie.source_production_year }, #{movie.duration_in_minutes}mn)
+          %br
+          #{ movie.source_channel } - #{ movie.source_broadcast_time.strftime("%H:%M") }
+        %p.movieDescription
+          = truncate movie.source_description, length: 100
+          = link_to "IMDB Page »", movie.imdb_url, class: "btn imdbLink", target: "_blank"
+    - if movie.imdb_rating.present?
+      .cardFix
+        .rating= movie.imdb_rating

@@ -1,1 +1,76 @@
-%h1 What will you watch tonight?
+.container-fluid
+  .row-fluid
+    .span3
+      .well.sidebar-nav
+        %ul.nav.nav-list
+          %li.nav-header Filters
+          %li.active
+            %a{:href => "#"} Genres
+          %li
+            %a{:href => "#"} Action
+          %li
+            %a{:href => "#"} Adventure
+          %li
+            %a{:href => "#"} Animation
+          %li
+            %a{:href => "#"} Comedy
+          %li
+            %a{:href => "#"} Crime
+          %li
+            %a{:href => "#"} Documentary
+          %li
+            %a{:href => "#"} Drama
+          %li
+            %a{:href => "#"} Family
+          %li
+            %a{:href => "#"} Fantasy
+          %li
+            %a{:href => "#"} History
+          %li
+            %a{:href => "#"} Horror
+          %li
+            %a{:href => "#"} Music
+          %li
+            %a{:href => "#"} Romance
+          %li
+            %a{:href => "#"} Sci-fi
+          %li
+            %a{:href => "#"} Short
+          %li
+            %a{:href => "#"} Thriller
+          %li
+            %a{:href => "#"} War
+          %li
+            %a{:href => "#"} Western
+          %li.nav-header Production Year
+          %li
+            %a{:href => "#"} 2010+
+          %li
+            %a{:href => "#"} 2000
+          %li
+            %a{:href => "#"} 90ies
+          %li
+            %a{:href => "#"} 80ies
+          %li
+            %a{:href => "#"} 70ies
+          %li
+            %a{:href => "#"} 60ies
+          %li
+            %a{:href => "#"} 50ies
+          %li
+            %a{:href => "#"} <50ies
+      / /.well
+    / /span
+    .span9
+      .hero-unit
+        %h1 Find a movie to watch!
+        %p
+          This is a movie description, this is a movie description.
+          This is a movie description, this is a movie description.
+          This is a movie description.
+        %p
+          %a.btn.btn-primary.btn-large{:href => "#"} Learn more »
+      - @movies.in_groups_of(4, false) do |group|
+        .row-fluid
+          = render group
+
