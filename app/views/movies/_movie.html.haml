@@ -10,7 +10,7 @@
         %p.movieInfo
           = production_details(movie)
           %br
-          #{ movie.source_channel } - #{ movie.source_broadcast_time.strftime("%H:%M") }
+          = channel_details(movie)
         %p.movieDescription
           = truncate movie.source_description, length: 100
           %br

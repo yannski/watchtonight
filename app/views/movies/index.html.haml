@@ -80,4 +80,8 @@
       - @movies_catchup.in_groups_of(4, false) do |group|
         .row-fluid
           = render partial: "movie", collection: group, as: :movie
+      %h2.section Xbox Videos
+      - @movies_xbox.in_groups_of(4, false) do |group|
+        .row-fluid
+          = render partial: "movie", collection: group, as: :movie
 

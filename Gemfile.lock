@@ -222,6 +222,7 @@ DEPENDENCIES
   jquery-turbolinks
   mongoid!
   mongoid-paperclip
+  nokogiri
   oj
   pry-nav
   pry-rails
